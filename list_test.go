@@ -2,47 +2,10 @@ package graph
 
 import (
 	"fmt"
-	"graph/src/util"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
-
-func testNewListGraphEmpty(v int) *ListGraph[util.TestInterface, util.TestInterface, util.TestInterface] {
-	return NewEmpty[util.TestInterface, util.TestInterface, util.TestInterface](
-		util.TestInterface{
-			Value: v,
-		},
-	)
-}
-
-func testNewListNode(v int) ListNode[util.TestInterface] {
-	return ListNode[util.TestInterface]{
-		Attributes: util.TestInterface{
-			Value: v,
-		},
-	}
-}
-
-func testNewListEdge(s, d, v int) ListEdge[util.TestInterface] {
-	return ListEdge[util.TestInterface]{
-		Source:     s,
-		Destine:    d,
-		Attributes: util.TestInterface{Value: 0},
-	}
-}
-
-func testNewListTree(s int) *ListGraph[util.TestInterface, util.TestInterface, util.TestInterface] {
-	g := testNewListGraphEmpty(1)
-	for i := 0; i < s; i++ {
-		g = g.AddNode(testNewListNode(i))
-	}
-
-	for i := 0; i < s-1; i++ {
-		g = g.AddEdge(testNewListEdge(i/2, i+1, i))
-	}
-	return g
-}
 
 func TestListCreateNewEmptyWithAttributes(t *testing.T) {
 	g := testNewListGraphEmpty(1)
@@ -53,8 +16,8 @@ func TestListCreateNewEmptyWithAttributes(t *testing.T) {
 func TestListAddNode(t *testing.T) {
 	v := 3
 	g := testNewListGraphEmpty(1)
-	ng := g.AddNode(ListNode[util.TestInterface]{
-		Attributes: util.TestInterface{Value: v},
+	ng := g.AddNode(ListNode[TestInterface]{
+		Attributes: TestInterface{Value: v},
 	})
 
 	assert.NotEqual(t, g, ng)
@@ -68,10 +31,10 @@ func TestListAddEdge(t *testing.T) {
 	dId := 6
 	v := 7
 	g := testNewListGraphEmpty(1)
-	ng := g.AddEdge(ListEdge[util.TestInterface]{
+	ng := g.AddEdge(ListEdge[TestInterface]{
 		Source:     sId,
 		Destine:    dId,
-		Attributes: util.TestInterface{Value: v},
+		Attributes: TestInterface{Value: v},
 	})
 
 	assert.NotEqual(t, g, ng)
@@ -86,10 +49,10 @@ func TestListRemoveEdge(t *testing.T) {
 	g := testNewListGraphEmpty(1)
 	for i := 0; i < 10; i++ {
 		g = g.AddEdge(
-			ListEdge[util.TestInterface]{
+			ListEdge[TestInterface]{
 				Source:     i,
 				Destine:    i + 1,
-				Attributes: util.TestInterface{Value: i},
+				Attributes: TestInterface{Value: i},
 			},
 		)
 	}
@@ -143,24 +106,24 @@ func TestListRemoveNode(t *testing.T) {
 	s := 30
 	g := testNewListGraphEmpty(1)
 	for i := 0; i < s; i++ {
-		g = g.AddNode(ListNode[util.TestInterface]{
-			Attributes: util.TestInterface{Value: i},
+		g = g.AddNode(ListNode[TestInterface]{
+			Attributes: TestInterface{Value: i},
 		})
 	}
 	for i := 0; i < s-1; i++ {
 		g = g.AddEdge(
-			ListEdge[util.TestInterface]{
+			ListEdge[TestInterface]{
 				Source:     i,
 				Destine:    i + 1,
-				Attributes: util.TestInterface{Value: i},
+				Attributes: TestInterface{Value: i},
 			},
 		)
 	}
 	g = g.AddEdge(
-		ListEdge[util.TestInterface]{
+		ListEdge[TestInterface]{
 			Source:     len(g.nodes) - 1,
 			Destine:    0,
-			Attributes: util.TestInterface{Value: len(g.nodes) - 1},
+			Attributes: TestInterface{Value: len(g.nodes) - 1},
 		},
 	)
 
@@ -215,16 +178,16 @@ func TestListIsGraph(t *testing.T) {
 	s := 30
 	g := testNewListGraphEmpty(1)
 	for i := 0; i < s; i++ {
-		g = g.AddNode(ListNode[util.TestInterface]{
-			Attributes: util.TestInterface{Value: i},
+		g = g.AddNode(ListNode[TestInterface]{
+			Attributes: TestInterface{Value: i},
 		})
 	}
 	for i := 0; i < s-1; i++ {
 		g = g.AddEdge(
-			ListEdge[util.TestInterface]{
+			ListEdge[TestInterface]{
 				Source:     i,
 				Destine:    i + 1,
-				Attributes: util.TestInterface{Value: i},
+				Attributes: TestInterface{Value: i},
 			},
 		)
 	}
@@ -233,16 +196,16 @@ func TestListIsGraph(t *testing.T) {
 	// Edge with Destive bigger than number of nodes is invalid
 	g = testNewListGraphEmpty(1)
 	for i := 0; i < s; i++ {
-		g = g.AddNode(ListNode[util.TestInterface]{
-			Attributes: util.TestInterface{Value: i},
+		g = g.AddNode(ListNode[TestInterface]{
+			Attributes: TestInterface{Value: i},
 		})
 	}
 	for i := 0; i < s; i++ {
 		g = g.AddEdge(
-			ListEdge[util.TestInterface]{
+			ListEdge[TestInterface]{
 				Source:     i,
 				Destine:    i + 1,
-				Attributes: util.TestInterface{Value: i},
+				Attributes: TestInterface{Value: i},
 			},
 		)
 	}
@@ -250,17 +213,17 @@ func TestListIsGraph(t *testing.T) {
 
 	// A empty graph with edges id invalid
 	g = testNewListGraphEmpty(1)
-	g = g.AddEdge(ListEdge[util.TestInterface]{
+	g = g.AddEdge(ListEdge[TestInterface]{
 		Source:     0,
 		Destine:    0,
-		Attributes: util.TestInterface{Value: 0},
+		Attributes: TestInterface{Value: 0},
 	})
 	assert.False(t, g.IsGraph())
 
 	// A empty graph with edges is valid
 	g = testNewListGraphEmpty(1)
-	g = g.AddNode(ListNode[util.TestInterface]{
-		Attributes: util.TestInterface{Value: 0},
+	g = g.AddNode(ListNode[TestInterface]{
+		Attributes: TestInterface{Value: 0},
 	})
 	fmt.Printf(" %+v", g)
 	assert.True(t, g.IsGraph())
@@ -297,4 +260,3 @@ func TestListFilterEgdesReturnNodeID(t *testing.T) {
 		assert.Equal(t, 0, len(filterEgdes))
 	}
 }
-

@@ -1,4 +1,4 @@
-package util
+package graph
 
 type DeapthFIrstSearch struct {
 	recursiveStack []bool
