@@ -1,4 +1,4 @@
-module graph
+module github.com/lucastheo/graph-golang
 
 go 1.20
 
